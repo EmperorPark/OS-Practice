@@ -14,6 +14,7 @@
 2 2 1 4
 3 1 2 9
 4 4 3 5
+
 */
 #include <iostream>
 #include <algorithm>
@@ -27,7 +28,7 @@ typedef struct Process {
     int priority;
     int arrivalTime;
     int burstTime;
-    int waitTime;
+    int responseTime;
 } Process;
 
 struct diff_SJF
@@ -48,7 +49,7 @@ struct diff_PS
 int numOfP;
 int fullTime = 0;
 
-void outputWT(Process* p[]);
+void outputRT(Process* p[]);
 void FCFS(Process* p[]);
 void SJF(Process* p[]);
 void PS(Process* p[]);
@@ -79,18 +80,18 @@ int main(int argc, char* argv[], char* envp[]) {
 }
 
 
-void outputWT(Process* p[]) {
+void outputRT(Process* p[]) {
 
     cout << "Total burst Time: " << fullTime << endl;
 
-    int sumWT = 0;
+    int sumRT = 0;
     for (int i = 0; i < numOfP; i++) {
-        cout << "P" << p[i]->pid << " WT: " << p[i]->waitTime << endl;
-        sumWT += p[i]->waitTime;
-        p[i]->waitTime = 0;
+        cout << "P" << p[i]->pid << " RT: " << p[i]->responseTime << endl;
+        sumRT += p[i]->responseTime;
+        p[i]->responseTime = 0;
     }
 
-    cout << "AVG WT: " << (double)sumWT / (double)numOfP << endl;
+    cout << "AVG RT: " << (double)sumRT / (double)numOfP << endl;
 }
 
 int diff_FCFS(const void* n1, const void* n2) {
@@ -106,14 +107,14 @@ void FCFS(Process* p[]) {
     int cntAll = 0;
     for (int i = 0; i < numOfP; i++) {
         for (int j = 0; j < p[i]->burstTime; j++) {
-            if (j == 0) p[i]->waitTime = cntAll;
+            if (j == 0) p[i]->responseTime = cntAll;
             cout << p[i]->pid << " ";
             cntAll++;
         }
     }
     cout << endl;
 
-    outputWT(p);
+    outputRT(p);
 }
 
 void SJF(Process* p[]) {
@@ -139,7 +140,7 @@ void SJF(Process* p[]) {
             }
         }
 
-        if (sjf_pq.top()->burstTime == tempEachBurst[sjf_pq.top()->pid]) sjf_pq.top()->waitTime = i;
+        if (sjf_pq.top()->burstTime == tempEachBurst[sjf_pq.top()->pid]) sjf_pq.top()->responseTime = i;
 
         cout << sjf_pq.top()->pid << " ";
         tempEachBurst[sjf_pq.top()->pid]--;
@@ -150,7 +151,7 @@ void SJF(Process* p[]) {
     }
     cout << endl;
 
-    outputWT(p);
+    outputRT(p);
 }
 
 
@@ -178,7 +179,7 @@ void PS(Process* p[]) {
             }
         }
 
-        if (ps_pq.top()->burstTime == tempEachBurst[ps_pq.top()->pid]) ps_pq.top()->waitTime = i;
+        if (ps_pq.top()->burstTime == tempEachBurst[ps_pq.top()->pid]) ps_pq.top()->responseTime = i;
 
         cout << ps_pq.top()->pid << " ";
         tempEachBurst[ps_pq.top()->pid]--;
@@ -189,7 +190,7 @@ void PS(Process* p[]) {
     }
     cout << endl;
 
-    outputWT(p);
+    outputRT(p);
 }
 
 
@@ -224,7 +225,7 @@ void RR(Process* p[], int timeSlice) {
             now = 0;
         }
 
-        if (p[now]->burstTime == tempEachBurst[p[now]->pid]) p[now]->waitTime = i;
+        if (p[now]->burstTime == tempEachBurst[p[now]->pid]) p[now]->responseTime = i;
         cout << p[now]->pid << " ";
         tempEachBurst[p[now]->pid]--;
         if (tempEachBurst[p[now]->pid] <= 0) {
@@ -237,5 +238,5 @@ void RR(Process* p[], int timeSlice) {
     }
     cout << endl;
 
-    outputWT(p);
+    outputRT(p);
 }
