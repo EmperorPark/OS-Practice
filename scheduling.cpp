@@ -29,6 +29,7 @@ typedef struct Process {
     int arrivalTime;
     int burstTime;
     int responseTime;
+    int waitingTime;
 } Process;
 
 struct diff_SJF
@@ -94,6 +95,20 @@ void outputRT(Process* p[]) {
     cout << "AVG RT: " << (double)sumRT / (double)numOfP << endl;
 }
 
+void outputWT(Process* p[]) {
+
+    cout << "Total burst Time: " << fullTime << endl;
+
+    int sumWT = 0;
+    for (int i = 0; i < numOfP; i++) {
+        cout << "P" << p[i]->pid << " WT: " << p[i]->waitingTime << endl;
+        sumWT += p[i]->waitingTime;
+        p[i]->waitingTime = 0;
+    }
+
+    cout << "AVG WT: " << (double)sumWT / (double)numOfP << endl;
+}
+
 int diff_FCFS(const void* n1, const void* n2) {
     return (*(Process**)n1)->arrivalTime > (*(Process**)n2)->arrivalTime;
 }
@@ -145,13 +160,24 @@ void SJF(Process* p[]) {
         cout << sjf_pq.top()->pid << " ";
         tempEachBurst[sjf_pq.top()->pid]--;
 
+        for(int i = 0; i < numOfP; i++) {
+            if(sjf_pq.top()->pid == p[i]->pid) continue;
+            if(tempEachBurst[p[i]->pid] != 0) {
+                p[i]->waitingTime++;
+            }
+        }
+
         if (tempEachBurst[sjf_pq.top()->pid] == 0) {
             sjf_pq.pop();
         }
+
+        
+
     }
     cout << endl;
 
     outputRT(p);
+    outputWT(p);
 }
 
 
@@ -183,6 +209,13 @@ void PS(Process* p[]) {
 
         cout << ps_pq.top()->pid << " ";
         tempEachBurst[ps_pq.top()->pid]--;
+        
+        for(int i = 0; i < numOfP; i++) {
+            if(ps_pq.top()->pid == p[i]->pid) continue;
+            if(tempEachBurst[p[i]->pid] != 0) {
+                p[i]->waitingTime++;
+            }
+        }
 
         if (tempEachBurst[ps_pq.top()->pid] == 0) {
             ps_pq.pop();
@@ -191,6 +224,7 @@ void PS(Process* p[]) {
     cout << endl;
 
     outputRT(p);
+    outputWT(p);
 }
 
 
@@ -228,6 +262,14 @@ void RR(Process* p[], int timeSlice) {
         if (p[now]->burstTime == tempEachBurst[p[now]->pid]) p[now]->responseTime = i;
         cout << p[now]->pid << " ";
         tempEachBurst[p[now]->pid]--;
+
+        for(int i = 0; i < numOfP; i++) {
+            if(p[now]->pid == p[i]->pid) continue;
+            if(tempEachBurst[p[i]->pid] != 0) {
+                p[i]->waitingTime++;
+            }
+        }
+
         if (tempEachBurst[p[now]->pid] <= 0) {
             nowSlice = -1;
         }
@@ -239,4 +281,5 @@ void RR(Process* p[], int timeSlice) {
     cout << endl;
 
     outputRT(p);
+    outputWT(p);
 }
