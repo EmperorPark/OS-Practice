@@ -1,3 +1,20 @@
+//컴파일러에 따라 STL qsort가 동위원소 비교 시 swap기준이 달라 각 스케줄러에서 동일 우선순위가 나오는 경우 컴파일러 별로 결과가 다를수 있다.
+//g++ (Ubuntu 9.4.0-1ubuntu1~20.04) 9.4.0 기준 최후순위 정렬기준을 입력순서 기준으로 해놓음
+/* 
+샘플입력
+5
+1 0 0 10
+2 0 0 29
+3 0 0 3
+4 0 0 7
+5 0 0 12
+
+4
+1 3 0 8
+2 2 1 4
+3 1 2 9
+4 4 3 5
+*/
 #include <iostream>
 #include <algorithm>
 #include <queue>
@@ -192,9 +209,6 @@ void RR(Process* p[], int timeSlice) {
     int now = 0;
     for (int i = 0; i < fullTime; i++) {
         
-        if (now >= timeSlice) {
-            now = 0;
-        }
         for (int j = now; ; j++) {
             if (j >= numOfP) j = 0;
             if (tempEachBurst[p[j]->pid] <= 0) {
