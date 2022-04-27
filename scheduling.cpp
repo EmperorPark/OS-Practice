@@ -101,6 +101,7 @@ void outputWT(Process* p[]) {
 
     int sumWT = 0;
     for (int i = 0; i < numOfP; i++) {
+        p[i]->waitingTime = p[i]->waitingTime - p[i]->arrivalTime;
         cout << "P" << p[i]->pid << " WT: " << p[i]->waitingTime << endl;
         sumWT += p[i]->waitingTime;
         p[i]->waitingTime = 0;
