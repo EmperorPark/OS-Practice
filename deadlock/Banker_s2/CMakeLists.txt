@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.0)
+project("Banker_s")
+message("project name: ${CMAKE_PROJECT_NAME}")
+message("install dir: ${CMAKE_INSTALL_PREFIX}")
+set(CMAKE_CXX_COMPILER g++-11)
+add_compile_options(-fdiagnostics-color=always -g -std=c++2a -pthread)
+set(SOURCE_FILES main main.cpp Banker_sItem.cpp)
+add_executable(banker_s ${SOURCE_FILES})
