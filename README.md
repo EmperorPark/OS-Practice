@@ -7,11 +7,11 @@ g++ (Ubuntu 9.4.0-1ubuntu1~20.04) 9.4.0 기준 최후순위 정렬기준을 입�
 # OS-Semaphore
 OS Semaphore
 
-Environment: g++-11 (Ubuntu 11.1.0-1ubuntu1~20.04) 11.1.0
+Environment: g++-11 (Ubuntu 11.1.0-1ubuntu1~20.04) 11.1.0  
 Compile option: g++-11 -fdiagnostics-color=always -g -std=c++2a -pthread Reader-Writer.cpp -o Reader-Writer
 
 # OS-Deadlock(Banker's Algorithm)
 OS Deadlock(Banker's Algorithm)
 
-Environment: g++-11 (Ubuntu 11.1.0-1ubuntu1~20.04) 11.1.0
+Environment: g++-11 (Ubuntu 11.1.0-1ubuntu1~20.04) 11.1.0  
 Compile: CMAKE
